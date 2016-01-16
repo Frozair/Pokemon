@@ -15,4 +15,6 @@ public interface ApiService {
     @GET("/api/v1/pokemon/{id}")
     Observable<PokemonEntity> getPokemon(@Path("id") int id);
 
+    @GET
+    Observable<SpriteEntity> getSprite(@Url String url);
 }

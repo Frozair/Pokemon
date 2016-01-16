@@ -2,6 +2,7 @@ package com.newrdev.experimental.pokemon.data.net;
 
 
 import com.newrdev.experimental.pokemon.data.entity.PokemonEntity;
+import com.newrdev.experimental.pokemon.data.entity.SpriteEntity;
 import com.newrdev.experimental.pokemon.data.internal.di.DaggerDataComponent;
 
 import org.junit.Before;
@@ -29,6 +30,21 @@ public class ApiServiceTest {
         TestSubscriber<PokemonEntity> subscriber = new TestSubscriber<>();
 
         apiService.getPokemon(pokemonId).subscribe(subscriber);
+        subscriber.awaitTerminalEvent();
+
+        assertThat(subscriber.getOnErrorEvents().size(), is(0));
+        assertThat(subscriber.getOnNextEvents().size(), is(1));
+        PokemonEntity pokemon = subscriber.getOnNextEvents().get(0);
+
+        assertThat(pokemon.getName(), is("Bulbasaur"));
+    }
+
+    @Test
+    public void testGetPokemonSprite() {
+        String pokemonSpriteUri = "/api/v1/sprite/1/";
+        TestSubscriber<SpriteEntity> subscriber = new TestSubscriber<>();
+
+        apiService.getSprite(pokemonSpriteUri);
         subscriber.awaitTerminalEvent();
 
         assertThat(subscriber.getOnErrorEvents().size(), is(0));
