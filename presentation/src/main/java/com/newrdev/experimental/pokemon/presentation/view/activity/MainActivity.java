@@ -3,15 +3,12 @@ package com.newrdev.experimental.pokemon.presentation.view.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.newrdev.experimental.pokemon.data.entity.PokedexEntity;
+
 import com.newrdev.experimental.pokemon.data.entity.PokemonEntity;
 import com.newrdev.experimental.pokemon.data.net.ApiService;
 import com.newrdev.experimental.pokemon.presentation.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-
-import java.io.IOException;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,7 +38,7 @@ public class MainActivity extends Activity {
         client.interceptors().add(logging);
 
         service = new Retrofit.Builder()
-                .baseUrl("http://pokeapi.co/api/v1/")
+                .baseUrl("http://pokeapi.co/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
@@ -50,31 +47,6 @@ public class MainActivity extends Activity {
 
     @OnClick(R.id.button)
     public void test(){
-        Call<PokedexEntity> call = service.getPokedex();
-
-//        try {
-//            PokedexEntity pokedexEntity = call.execute().body();
-//            System.out.println("The name is?");
-//            System.out.println(pokedexEntity.getName());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        call.enqueue(new Callback<PokedexEntity>() {
-            @Override
-            public void onResponse(Response<PokedexEntity> response, Retrofit retrofit) {
-                System.out.println(retrofit.toString());
-                System.out.println("URL: " + retrofit.baseUrl());
-                PokedexEntity pokedexEntity = response.body();
-
-                System.out.println("The name is?");
-                System.out.println(pokedexEntity.getName());
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+//        service.getSprite("/api/v1/sprite/1/");
     }
 }
