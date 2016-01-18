@@ -44,7 +44,7 @@ public class ApiServiceTest {
         String pokemonSpriteUri = "/api/v1/sprite/1/";
         TestSubscriber<SpriteEntity> subscriber = new TestSubscriber<>();
 
-        apiService.getSprite(pokemonSpriteUri);
+        apiService.getSprite(pokemonSpriteUri).subscribe(subscriber);
         subscriber.awaitTerminalEvent();
 
         assertThat(subscriber.getOnErrorEvents().size(), is(0));
