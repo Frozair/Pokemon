@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
@@ -42,8 +44,14 @@ public class PokemonDataRepositoryTest {
 
         PokemonEntity pokemonEntity = new PokemonEntity();
         pokemonEntity.setName(pokemonName);
+        pokemonEntity.setSprites(new ArrayList<PokemonEntity.Sprite>());
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName(pokemonName);
+        pokemon.setSpriteUris(new ArrayList<String>());
 
         when(mockApiService.getPokemon(pokemonId)).thenReturn(Observable.just(pokemonEntity));
+        when(mockPokemonEntityDataMapper.transform(pokemonEntity)).thenReturn(pokemon);
 
         TestSubscriber<Pokemon> subscriber = new TestSubscriber<>();
         pokemonDataRepository.getPokemon(pokemonId).subscribe(subscriber);
@@ -51,6 +59,7 @@ public class PokemonDataRepositoryTest {
         subscriber.awaitTerminalEvent();
 
         verify(mockApiService).getPokemon(pokemonId);
+
         assertThat(subscriber.getOnErrorEvents().size(), is(0));
         assertThat(subscriber.getOnNextEvents().size(), is(1));
     }

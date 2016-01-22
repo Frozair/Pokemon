@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 /**
  * Created by newrdev on 1/17/16.
@@ -30,12 +31,34 @@ public class PokemonDataRepository implements PokemonRepository{
 
     @Override
     public Observable<Pokemon> getPokemon(int id) {
-
-        return this.apiService.getPokemon(id).map(new Func1<PokemonEntity, Pokemon>() {
+        return this.apiService.getPokemon(id).flatMap(new Func1<PokemonEntity, Observable<Pokemon>>() {
             @Override
-            public Pokemon call(PokemonEntity pokemonEntity) {
-                return pokemonEntityDataMapper.transform(pokemonEntity);
+            public Observable<Pokemon> call(PokemonEntity pokemonEntity) {
+                Observable<Pokemon> pokemon = Observable.just(pokemonEntityDataMapper.transform(pokemonEntity));
+                Observable<List<String>> sprites = getSprites(pokemonEntity.getSprites());
+
+                return Observable.zip(pokemon, sprites, new Func2<Pokemon, List<String>, Pokemon>() {
+                    @Override
+                    public Pokemon call(Pokemon pokemon, List<String> sprites) {
+                        pokemon.setSpriteUris(sprites);
+                        return pokemon;
+                    }
+                });
             }
         });
+    }
+
+    private Observable<List<String>> getSprites(List<PokemonEntity.Sprite> sprites) {
+        return Observable.from(sprites).flatMap(new Func1<PokemonEntity.Sprite, Observable<SpriteEntity>>() {
+            @Override
+            public Observable<SpriteEntity> call(PokemonEntity.Sprite sprite) {
+                return apiService.getSprite(sprite.getResource_uri());
+            }
+        }).flatMap(new Func1<SpriteEntity, Observable<String>>() {
+            @Override
+            public Observable<String> call(SpriteEntity spriteEntity) {
+                return Observable.just(spriteEntity.getImage());
+            }
+        }).toList();
     }
 }

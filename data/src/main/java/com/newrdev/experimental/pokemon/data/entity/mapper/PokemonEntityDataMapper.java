@@ -34,10 +34,6 @@ public class PokemonEntityDataMapper {
             pokemon.setSpecialDefense(pokemonEntity.getSp_def());
             pokemon.setSpeed(pokemonEntity.getSpeed());
             pokemon.setSpriteUris(new ArrayList<String>());
-
-            for(PokemonEntity.Sprite spriteEntity : pokemonEntity.getSprites()) {
-                pokemon.getSpriteUris().add(spriteEntity.getResource_uri());
-            }
         }
 
         return pokemon;
