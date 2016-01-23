@@ -1,21 +1,21 @@
-package com.newrdev.experimental.pokemon.data.entity;
+package com.newrdev.experimental.pokemon.domain.entity;
 
 import java.util.List;
 
 /**
- * Created by newrdev on 12/30/15.
+ * Created by newrdev on 1/16/16.
  */
-public class PokemonEntity {
+public class Pokemon {
     private String name;
     private int hp;
     private int attack;
     private int defense;
-    private int sp_atk;
-    private int sp_def;
+    private int specialAttack;
+    private int specialDefense;
     private int speed;
     private int height;
     private int weight;
-    private List<Sprite> sprites;
+    private List<String> spriteUris;
 
     public String getName() {
         return name;
@@ -49,20 +49,20 @@ public class PokemonEntity {
         this.defense = defense;
     }
 
-    public int getSp_atk() {
-        return sp_atk;
+    public int getSpecialAttack() {
+        return specialAttack;
     }
 
-    public void setSp_atk(int sp_atk) {
-        this.sp_atk = sp_atk;
+    public void setSpecialAttack(int specialAttack) {
+        this.specialAttack = specialAttack;
     }
 
-    public int getSp_def() {
-        return sp_def;
+    public int getSpecialDefense() {
+        return specialDefense;
     }
 
-    public void setSp_def(int sp_def) {
-        this.sp_def = sp_def;
+    public void setSpecialDefense(int specialDefense) {
+        this.specialDefense = specialDefense;
     }
 
     public int getSpeed() {
@@ -89,32 +89,11 @@ public class PokemonEntity {
         this.weight = weight;
     }
 
-    public List<Sprite> getSprites() {
-        return sprites;
+    public List<String> getSpriteUris() {
+        return spriteUris;
     }
 
-    public void setSprites(List<Sprite> sprites) {
-        this.sprites = sprites;
-    }
-
-    public final class Sprite {
-        private String name;
-        private String resource_uri;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getResource_uri() {
-            return resource_uri;
-        }
-
-        public void setResource_uri(String resource_uri) {
-            this.resource_uri = resource_uri;
-        }
+    public void setSpriteUris(List<String> spriteUris) {
+        this.spriteUris = spriteUris;
     }
 }
