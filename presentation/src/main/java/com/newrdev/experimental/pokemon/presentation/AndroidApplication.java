@@ -2,6 +2,8 @@ package com.newrdev.experimental.pokemon.presentation;
 
 import android.app.Application;
 
+import timber.log.Timber;
+
 /**
  * Created by newrdev on 12/30/15.
  */
@@ -12,6 +14,8 @@ public class AndroidApplication extends Application {
     public void onCreate() {
         super.onCreate();
         this.initializeInjector();
+
+        Timber.plant(new Timber.DebugTree());
     }
 
     private void initializeInjector() {
