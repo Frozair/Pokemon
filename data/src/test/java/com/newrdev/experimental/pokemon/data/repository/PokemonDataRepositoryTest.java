@@ -38,7 +38,7 @@ public class PokemonDataRepositoryTest {
     }
 
     @Test
-    public void testGetPokemon() {
+    public void getPokemonById() {
         int pokemonId = 1;
         String pokemonName = "Bulbasaur";
 
@@ -50,15 +50,41 @@ public class PokemonDataRepositoryTest {
         pokemon.setName(pokemonName);
         pokemon.setSpriteUris(new ArrayList<String>());
 
-        when(mockApiService.getPokemon(pokemonId)).thenReturn(Observable.just(pokemonEntity));
+        when(mockApiService.getPokemonById(pokemonId)).thenReturn(Observable.just(pokemonEntity));
         when(mockPokemonEntityDataMapper.transform(pokemonEntity)).thenReturn(pokemon);
 
         TestSubscriber<Pokemon> subscriber = new TestSubscriber<>();
-        pokemonDataRepository.getPokemon(pokemonId).subscribe(subscriber);
+        pokemonDataRepository.getPokemonById(pokemonId).subscribe(subscriber);
 
         subscriber.awaitTerminalEvent();
 
-        verify(mockApiService).getPokemon(pokemonId);
+        verify(mockApiService).getPokemonById(pokemonId);
+
+        assertThat(subscriber.getOnErrorEvents().size(), is(0));
+        assertThat(subscriber.getOnNextEvents().size(), is(1));
+    }
+
+    @Test
+    public void getPokemonByName() {
+        String pokemonName = "Bulbasaur";
+
+        PokemonEntity pokemonEntity = new PokemonEntity();
+        pokemonEntity.setName(pokemonName);
+        pokemonEntity.setSprites(new ArrayList<PokemonEntity.Sprite>());
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName(pokemonName);
+        pokemon.setSpriteUris(new ArrayList<String>());
+
+        when(mockApiService.getPokemonByName(pokemonName)).thenReturn(Observable.just(pokemonEntity));
+        when(mockPokemonEntityDataMapper.transform(pokemonEntity)).thenReturn(pokemon);
+
+        TestSubscriber<Pokemon> subscriber = new TestSubscriber<>();
+        pokemonDataRepository.getPokemonByName(pokemonName).subscribe(subscriber);
+
+        subscriber.awaitTerminalEvent();
+
+        verify(mockApiService).getPokemonByName(pokemonName);
 
         assertThat(subscriber.getOnErrorEvents().size(), is(0));
         assertThat(subscriber.getOnNextEvents().size(), is(1));

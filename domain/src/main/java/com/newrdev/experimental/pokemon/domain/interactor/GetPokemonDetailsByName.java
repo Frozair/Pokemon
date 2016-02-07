@@ -9,26 +9,26 @@ import javax.inject.Inject;
 import rx.Observable;
 
 /**
- * Created by newrdev on 1/23/16.
+ * Created by newrdev on 2/7/16.
  */
-public class GetPokemonDetails extends UseCase{
-    private int pokemonId;
+public class GetPokemonDetailsByName extends UseCase {
+    private String pokemonName;
     private final PokemonRepository pokemonRepository;
 
     @Inject
-    public GetPokemonDetails(PokemonRepository pokemonRepository,
-                             ExecutionThread executionThread, PostExecutionThread postExecutionThread) {
+    public GetPokemonDetailsByName(PokemonRepository pokemonRepository,
+                                 ExecutionThread executionThread, PostExecutionThread postExecutionThread) {
         super(executionThread, postExecutionThread);
 
         this.pokemonRepository = pokemonRepository;
     }
 
-    public void setPokemonId(int pokemonId) {
-        this.pokemonId = pokemonId;
+    public void setPokemonName(String pokemonName) {
+        this.pokemonName = pokemonName;
     }
 
     @Override
     public Observable buildUseCaseObservable() {
-        return this.pokemonRepository.getPokemon(this.pokemonId);
+        return this.pokemonRepository.getPokemonByName(pokemonName);
     }
 }

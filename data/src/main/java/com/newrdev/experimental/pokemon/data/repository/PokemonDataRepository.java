@@ -30,8 +30,27 @@ public class PokemonDataRepository implements PokemonRepository{
     }
 
     @Override
-    public Observable<Pokemon> getPokemon(int id) {
-        return this.apiService.getPokemon(id).flatMap(new Func1<PokemonEntity, Observable<Pokemon>>() {
+    public Observable<Pokemon> getPokemonById(int id) {
+        return this.apiService.getPokemonById(id).flatMap(new Func1<PokemonEntity, Observable<Pokemon>>() {
+            @Override
+            public Observable<Pokemon> call(PokemonEntity pokemonEntity) {
+                Observable<Pokemon> pokemon = Observable.just(pokemonEntityDataMapper.transform(pokemonEntity));
+                Observable<List<String>> sprites = getSprites(pokemonEntity.getSprites());
+
+                return Observable.zip(pokemon, sprites, new Func2<Pokemon, List<String>, Pokemon>() {
+                    @Override
+                    public Pokemon call(Pokemon pokemon, List<String> sprites) {
+                        pokemon.setSpriteUris(sprites);
+                        return pokemon;
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<Pokemon> getPokemonByName(String name) {
+        return this.apiService.getPokemonByName(name).flatMap(new Func1<PokemonEntity, Observable<Pokemon>>() {
             @Override
             public Observable<Pokemon> call(PokemonEntity pokemonEntity) {
                 Observable<Pokemon> pokemon = Observable.just(pokemonEntityDataMapper.transform(pokemonEntity));

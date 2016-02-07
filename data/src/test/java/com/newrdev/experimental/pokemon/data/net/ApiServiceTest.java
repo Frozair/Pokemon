@@ -29,7 +29,7 @@ public class ApiServiceTest {
         int pokemonId = 1;
         TestSubscriber<PokemonEntity> subscriber = new TestSubscriber<>();
 
-        apiService.getPokemon(pokemonId).subscribe(subscriber);
+        apiService.getPokemonById(pokemonId).subscribe(subscriber);
         subscriber.awaitTerminalEvent();
 
         assertThat(subscriber.getOnErrorEvents().size(), is(0));

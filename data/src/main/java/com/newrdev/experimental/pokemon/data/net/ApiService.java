@@ -13,7 +13,10 @@ import rx.Observable;
  */
 public interface ApiService {
     @GET("/api/v1/pokemon/{id}")
-    Observable<PokemonEntity> getPokemon(@Path("id") int id);
+    Observable<PokemonEntity> getPokemonById(@Path("id") int id);
+
+    @GET("/api/v1/pokemon/{name}")
+    Observable<PokemonEntity> getPokemonByName(@Path("name") String name);
 
     @GET
     Observable<SpriteEntity> getSprite(@Url String url);
